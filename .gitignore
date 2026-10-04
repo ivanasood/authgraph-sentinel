@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+*.db
+
+# Engine output artifacts
+report.md
+report.json
+retest_scenarios*.json
+
+# Node / frontend
+node_modules/
+dist/
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/
+
+# Environment variables
+.env
+.env.*
+!.env.example

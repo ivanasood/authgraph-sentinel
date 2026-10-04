@@ -1,0 +1,31 @@
+# AuthGraph Sentinel - full stack in one command:  docker compose up --build
+#
+# lab      : intentionally-vulnerable target  (http://localhost:8000)
+# backend  : engine + API                     (http://localhost:8001/docs)
+# frontend : dashboard                        (http://localhost:5173)
+#
+# The backend reaches the lab over the compose network at http://lab:8000,
+# which is set below and allowed by the scope guard via TARGET_ALLOWED_HOSTS.
+
+services:
+  lab:
+    build: ./sentinel-lab
+    ports:
+      - "8000:8000"
+
+  backend:
+    build: ./backend
+    ports:
+      - "8001:8001"
+    environment:
+      - TARGET_BASE_URL=http://lab:8000
+      - TARGET_ALLOWED_HOSTS=lab:8000
+    depends_on:
+      - lab
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
