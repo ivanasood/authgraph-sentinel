@@ -1,0 +1,23 @@
+FROM python:3.12-slim
+
+WORKDIR /app
+
+COPY backend/requirements.txt /app/backend/requirements.txt
+COPY sentinel-lab/requirements.txt /app/sentinel-lab/requirements.txt
+
+RUN pip install --no-cache-dir \
+    -r /app/backend/requirements.txt \
+    -r /app/sentinel-lab/requirements.txt
+
+COPY backend /app/backend
+COPY sentinel-lab /app/sentinel-lab
+COPY render-start.sh /app/render-start.sh
+
+RUN chmod +x /app/render-start.sh
+
+ENV TARGET_BASE_URL=http://127.0.0.1:8000
+ENV TARGET_ALLOWED_HOSTS=127.0.0.1:8000,localhost:8000
+
+EXPOSE 10000
+
+CMD ["/app/render-start.sh"]
